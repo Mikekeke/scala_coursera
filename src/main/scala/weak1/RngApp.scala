@@ -41,7 +41,9 @@ object RngApp extends App {
     list <- if (isEmpty) emptyList else list
   } yield list
 
-  def lists2: Generator[List[Int]] = bools.flatMap(isEmpty => (if (isEmpty) emptyList else list).map(list => list))
+  def lists2: Generator[List[Int]] = bools.flatMap(isEmpty => (if (isEmpty) emptyList else list).map(list => list)) // desugared
+  def lists3: Generator[List[Int]] = bools.flatMap(isEmpty => (if (isEmpty) emptyList else list).map(identity))
+  1 to 10 foreach(_=> println(lists3.generate))
 
 
 //  trees gen
