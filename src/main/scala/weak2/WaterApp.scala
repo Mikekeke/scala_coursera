@@ -26,7 +26,7 @@ class Problem(capacity: Vector[Int]) {
 
   val glasses: Range = capacity.indices
 
-  val actions =
+  val actions: Seq[Action] =
     glasses.map(Empty) ++ glasses.map(Fill) ++
       (for (from <- glasses; to <- glasses; if from != to) yield Pour(from, to))
 
@@ -44,7 +44,15 @@ class Problem(capacity: Vector[Int]) {
 
   def from(paths: Set[Path]): Stream[Set[Path]] =
     if(paths.isEmpty) Stream.empty
-    else ???
+    else {
+      val more: Set[Path] = for {
+        path: Path <- paths
+        next: Path <- actions map path.extend
+      } yield next
+      paths #:: from(more)
+    }
+
+  val pathSets = from(Set(initPath))
 
 
 }
